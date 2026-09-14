@@ -24,9 +24,13 @@ cd "$(dirname "$0")"
 REPO=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
 ME=$(gh api user --jq .login)
 PRS=${PRS:-16}
-# ponytail: default co-author is the Copilot bot account, which is a real
-# GitHub user with a public noreply address. Reports on whether a bot
-# co-author unlocks the badge are mixed; a real second account is certain.
+# Co-author is derived from ALT_TOKEN when that is set, so the second account
+# never has to be typed by hand. Tested 2026-09-14: the Copilot bot account is
+# parsed by GitHub as a co-author but does NOT unlock Pair Extraordinaire, so a
+# real second account is required.
+if [ -z "${COAUTHOR:-}" ] && [ -n "${ALT_TOKEN:-}" ]; then
+  COAUTHOR=$(GH_TOKEN=$ALT_TOKEN gh api user --jq '"\(.name // .login) <\(.id)+\(.login)@users.noreply.github.com>"')
+fi
 COAUTHOR=${COAUTHOR:-"Copilot <175728472+Copilot@users.noreply.github.com>"}
 DEFAULT=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
 

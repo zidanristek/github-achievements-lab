@@ -7,10 +7,17 @@ repo ini saja.
 ## Cara pakai
 
 ```bash
-bash achieve.sh                # Quickdraw + 16 PR merged (Pull Shark bronze, YOLO, Pair Extraordinaire)
-PRS=128 bash achieve.sh pullshark
-ALT_TOKEN=ghp_xxx bash achieve.sh galaxybrain   # butuh akun kedua
+bash achieve.sh                # Quickdraw + 16 PR merged (Pull Shark bronze, YOLO)
+
+# Dengan akun kedua: co-author diambil otomatis dari token, satu perintah
+# menutup Pair Extraordinaire, Pull Shark, dan Galaxy Brain sekaligus.
+export ALT_TOKEN=ghp_xxx
+PRS=48 bash achieve.sh pullshark    # Pair Extraordinaire emas + Pull Shark perunggu
+bash achieve.sh galaxybrain         # 2 jawaban diterima
 ```
+
+Butuh `ALT_TOKEN` dengan scope `repo`, dan akun kedua tersebut harus akun
+manusia, bukan bot.
 
 ## Daftar achievement (per September 2026)
 
@@ -19,7 +26,7 @@ ALT_TOKEN=ghp_xxx bash achieve.sh galaxybrain   # butuh akun kedua
 | Quickdraw | Tutup issue/PR dalam 5 menit setelah dibuka | 1 | Ya |
 | YOLO | Merge PR sendiri tanpa review | 1 | Ya |
 | Pull Shark | PR yang di-merge | 2 / 16 / 128 / 1024 | Ya |
-| Pair Extraordinaire | Commit ber-`Co-authored-by` di PR yang di-merge | 1 / 10 / 24 / 48 | Ya, co-author harus akun GitHub sungguhan dengan email terverifikasi |
+| Pair Extraordinaire | Commit ber-`Co-authored-by` di PR yang di-merge | 1 / 10 / 24 / 48 | Ya, tapi co-author wajib akun manusia. Diuji 14 September 2026: akun bot Copilot diparse GitHub sebagai co-author namun badge tidak keluar |
 | Galaxy Brain | Jawaban ditandai "answer" di Discussions repo publik | 2 / 8 / 16 / 32 | Hanya dengan akun kedua; pertanyaan sendiri tidak dihitung |
 | Starstruck | Satu repo dapat bintang | 16 / 128 / 512 / 4096 | Tidak. Beli/tukar bintang melanggar ToS GitHub |
 | Public Sponsor | Sponsor siapa pun lewat GitHub Sponsors | 1 | Tidak. Bayar minimal 1 USD sekali, manual |
