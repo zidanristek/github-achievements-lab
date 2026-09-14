@@ -6,6 +6,8 @@ repo ini saja.
 
 ## Cara pakai
 
+Git Bash:
+
 ```bash
 bash achieve.sh                # Quickdraw + 16 PR merged (Pull Shark bronze, YOLO)
 
@@ -14,6 +16,16 @@ bash achieve.sh                # Quickdraw + 16 PR merged (Pull Shark bronze, YO
 export ALT_TOKEN=ghp_xxx
 PRS=48 bash achieve.sh pullshark    # Pair Extraordinaire emas + Pull Shark perunggu
 bash achieve.sh galaxybrain         # 2 jawaban diterima
+```
+
+PowerShell. Jangan pakai `bash` polos, yang ada di PATH milik WSL dan akan
+gagal dengan `execvpe(/bin/bash) failed`. Panggil Git Bash lewat jalur penuh:
+
+```powershell
+$env:ALT_TOKEN = "ghp_xxx"
+$env:PRS = "48"
+& "C:\Program Files\Git\bin\bash.exe" achieve.sh pullshark
+& "C:\Program Files\Git\bin\bash.exe" achieve.sh galaxybrain
 ```
 
 Butuh `ALT_TOKEN` dengan scope `repo`, dan akun kedua tersebut harus akun
