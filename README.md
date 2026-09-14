@@ -14,9 +14,12 @@ bash achieve.sh                # Quickdraw + 16 PR merged (Pull Shark bronze, YO
 # Dengan akun kedua: co-author diambil otomatis dari token, satu perintah
 # menutup Pair Extraordinaire, Pull Shark, dan Galaxy Brain sekaligus.
 export ALT_TOKEN=ghp_xxx
-PRS=48 bash achieve.sh pullshark    # Pair Extraordinaire emas + Pull Shark perunggu
-bash achieve.sh galaxybrain         # 2 jawaban diterima
+PRS=48 bash achieve.sh pullshark        # Pair Extraordinaire emas
+ANSWERS=32 bash achieve.sh galaxybrain  # Galaxy Brain emas
 ```
+
+`PRS` dan `ANSWERS` menentukan tier. Pull Shark 2 / 16 / 128 / 1024,
+Pair Extraordinaire 1 / 10 / 24 / 48, Galaxy Brain 2 / 8 / 16 / 32.
 
 PowerShell. Jangan pakai `bash` polos, yang ada di PATH milik WSL dan akan
 gagal dengan `execvpe(/bin/bash) failed`. Panggil Git Bash lewat jalur penuh:

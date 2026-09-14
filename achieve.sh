@@ -13,8 +13,8 @@
 #   Pull Shark           N merged PRs (2 base, 16 bronze, 128 silver, 1024 gold)
 #   Pair Extraordinaire  every PR commit carries a Co-authored-by trailer
 #                        (1 base, 10 bronze, 24 silver, 48 gold)
-#   Galaxy Brain         2 discussions asked by ALT, answered by you, marked
-#                        as answer by ALT (2 base, 8, 16, 32)
+#   Galaxy Brain         ANSWERS discussions asked by ALT, answered by you,
+#                        marked as answer by ALT (2 base, 8, 16, 32)
 # Not scriptable: Starstruck (16 real stars), Public Sponsor (pay $1),
 # Arctic Code Vault / Mars 2020 (retired), Heart On Your Sleeve /
 # Open Sourcerer (unreleased as of 2026-09).
@@ -24,6 +24,7 @@ cd "$(dirname "$0")"
 REPO=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
 ME=$(gh api user --jq .login)
 PRS=${PRS:-16}
+ANSWERS=${ANSWERS:-2}
 # Co-author is derived from ALT_TOKEN when that is set, so the second account
 # never has to be typed by hand. Tested 2026-09-14: the Copilot bot account is
 # parsed by GitHub as a co-author but does NOT unlock Pair Extraordinaire, so a
@@ -82,14 +83,15 @@ galaxybrain() {
   read -r rid cid < <(gh api graphql -f query='query($o:String!,$n:String!){repository(owner:$o,name:$n){id discussionCategories(first:20){nodes{id name isAnswerable}}}}' \
     -f o="${REPO%/*}" -f n="${REPO#*/}" \
     --jq '.data.repository | "\(.id) \(.discussionCategories.nodes[] | select(.isAnswerable) | .id)"' | head -1)
-  for i in 1 2; do
+  for i in $(seq 1 "$ANSWERS"); do
     local did aid
     did=$(GH_TOKEN=$ALT_TOKEN gh api graphql -f query='mutation($r:ID!,$c:ID!,$t:String!,$b:String!){createDiscussion(input:{repositoryId:$r,categoryId:$c,title:$t,body:$b}){discussion{id}}}' \
       -f r="$rid" -f c="$cid" -f t="Question $i $(date +%s)" -f b="How do I run achieve.sh?" --jq .data.createDiscussion.discussion.id)
     aid=$(gh api graphql -f query='mutation($d:ID!,$b:String!){addDiscussionComment(input:{discussionId:$d,body:$b}){comment{id}}}' \
       -f d="$did" -f b="Run \`bash achieve.sh\` from the repo root." --jq .data.addDiscussionComment.comment.id)
     GH_TOKEN=$ALT_TOKEN gh api graphql -f query='mutation($c:ID!){markDiscussionCommentAsAnswer(input:{id:$c}){clientMutationId}}' -f c="$aid" >/dev/null
-    echo "galaxybrain: answer $i marked"
+    echo "galaxybrain: answer $i/$ANSWERS marked"
+    sleep 3   # ponytail: same secondary rate limit as the PR loop
   done
 }
 
