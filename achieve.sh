@@ -28,8 +28,15 @@ PRS=${PRS:-16}
 # never has to be typed by hand. Tested 2026-09-14: the Copilot bot account is
 # parsed by GitHub as a co-author but does NOT unlock Pair Extraordinaire, so a
 # real second account is required.
-if [ -z "${COAUTHOR:-}" ] && [ -n "${ALT_TOKEN:-}" ]; then
-  COAUTHOR=$(GH_TOKEN=$ALT_TOKEN gh api user --jq '"\(.name // .login) <\(.id)+\(.login)@users.noreply.github.com>"')
+if [ -n "${ALT_TOKEN:-}" ]; then
+  ALT=$(GH_TOKEN=$ALT_TOKEN gh api user --jq .login 2>/dev/null) || {
+    echo "ALT_TOKEN was rejected by GitHub (401)." >&2
+    echo "It must be a real token from a second account, not a placeholder:" >&2
+    echo "  github.com/settings/tokens, Generate new token (classic), scope repo" >&2
+    exit 1
+  }
+  [ -n "${COAUTHOR:-}" ] || COAUTHOR=$(GH_TOKEN=$ALT_TOKEN gh api user \
+    --jq '"\(.name // .login) <\(.id)+\(.login)@users.noreply.github.com>"')
 fi
 COAUTHOR=${COAUTHOR:-"Copilot <175728472+Copilot@users.noreply.github.com>"}
 DEFAULT=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
