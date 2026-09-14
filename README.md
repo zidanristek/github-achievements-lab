@@ -50,8 +50,15 @@ manusia, bukan bot.
 | Arctic Code Vault Contributor | Kontribusi sebelum Feb 2020 | 1 | Sudah ditutup |
 | Mars 2020 Helicopter Contributor | Kontribusi ke dependensi Ingenuity | 1 | Sudah ditutup |
 
-Badge muncul di profil dengan jeda, dari beberapa menit sampai beberapa jam.
-Badge baru dihitung untuk PR yang masuk ke default branch.
+Jeda kemunculan badge tidak seragam. Pull Shark, Quickdraw, YOLO, dan Galaxy
+Brain terbit dalam hitungan menit. Pair Extraordinaire dihitung ulang pada
+siklus terpisah, 24 sampai 48 jam, jadi profil yang masih kosong sehari
+setelah PR merged belum tentu gagal. Semua badge hanya menghitung aktivitas
+yang masuk ke default branch repo publik.
+
+Jangan jalankan dua proses `achieve.sh` sekaligus di klon yang sama. Loopnya
+berpindah branch dan menjalankan `git pull --ff-only`, jadi proses kedua akan
+menimpa perubahan proses pertama.
 
 Sumber: [drknzz/GitHub-Achievements](https://github.com/drknzz/GitHub-Achievements),
 [Schweinepriester/github-profile-achievements](https://github.com/Schweinepriester/github-profile-achievements),

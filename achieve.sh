@@ -61,9 +61,15 @@ pullshark() {
     git push -q -u origin "$b"
     local url
     url=$(gh pr create --fill --base "$DEFAULT" --head "$b")
-    # ponytail: merge, not squash. Squash rewrites the message and can drop
-    # the trailer unless re-added; plain merge keeps the co-authored commit.
-    gh pr merge "$url" --merge --delete-branch
+    # Squash, not merge. A merge commit lands on the default branch carrying
+    # only "Merge pull request #N", leaving the trailer on a child commit.
+    # Squashing puts the Co-authored-by trailer on the default branch itself,
+    # which is the shape every working report of Pair Extraordinaire describes.
+    # The trailer is passed explicitly so it survives regardless of the
+    # repository's default squash message setting.
+    gh pr merge "$url" --squash --delete-branch \
+      --subject "chore: log pr $i (#${url##*/})" \
+      --body "Co-authored-by: $COAUTHOR"
     git checkout -q "$DEFAULT" && git pull -q --ff-only
     echo "pr $i/$PRS merged: $url"
     sleep 3   # ponytail: secondary rate limit is on writes per minute
